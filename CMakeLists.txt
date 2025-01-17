@@ -30,7 +30,7 @@ install(
     DESTINATION lib/${PROJECT_NAME}
 )
 install(
-    DIRECTORY config description launch gz-worlds isaac-assets
+    DIRECTORY config description launch gz-worlds isaac-assets scripts
     DESTINATION share/${PROJECT_NAME}
 )
 

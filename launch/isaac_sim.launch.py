@@ -7,48 +7,57 @@ from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, Exec
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
-from launch_ros.actions import Node
+
+ISAAC_SIM_DEFAULT_VERSION = '4.2.0'
+ISAAC_SIM_DEFAULT_INSTALL_PATH = f'.local/share/ov/pkg/isaac-sim-{ISAAC_SIM_DEFAULT_VERSION}/'
 
 
 def generate_launch_description():
 
-    sim_pkg_path = get_package_share_directory('csm_sim')
+    pkg_path = get_package_share_directory('csm_sim')
 
+# CORE
     # launch isaac sim
     isaac_sim = ExecuteProcess(
         cmd = [
             PythonExpression(["'", LaunchConfiguration('isaac-root'), "' + 'python.sh'" ]),
-            os.path.join(sim_pkg_path, 'launch', 'sim.py'),
+            os.path.join(pkg_path, 'scripts', 'isaac_sim.py'),
             '--gui', 'true',
-            '--assets', os.path.join(sim_pkg_path, 'isaac-assets/')
+            '--assets', os.path.join(pkg_path, 'isaac-assets/')
         ],
         output = 'screen',
         # prefix = ['xterm -e']
     )
+
+# OPTIONAL
     # launch xbox control
     launch_xbox_ctrl = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(sim_pkg_path, 'launch', 'xbox_ctrl.launch.py')
-        )
+            os.path.join(pkg_path, 'launch', 'xbox_ctrl.launch.py')
+        ),
+        condition = IfCondition(LaunchConfiguration('xbox_ctrl', default='true'))
     )
     # robot state publisher
     state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(sim_pkg_path, 'launch', 'robot_state_publisher.launch.py')
+            os.path.join(pkg_path, 'launch', 'robot_state_publisher.launch.py')
         ),
-        launch_arguments = { 'use_sim_time' : 'true' }.items()
+        launch_arguments = { 'use_sim_time' : 'true' }.items(),
+        condition = IfCondition(LaunchConfiguration('state_pub', default='true'))
     )
     # foxglove
     foxglove_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(sim_pkg_path, 'launch', 'foxglove.launch.py')
+            os.path.join(pkg_path, 'launch', 'foxglove.launch.py')
         ),
-        launch_arguments = {'use_sim_time': 'true'}.items(),
+        launch_arguments = { 'use_sim_time' : 'true' }.items(),
         condition = IfCondition(LaunchConfiguration('foxglove', default='true'))
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument('isaac-root', default_value=os.path.join(os.getenv('HOME'), '.local/share/ov/pkg/isaac-sim-4.2.0/')),
+        DeclareLaunchArgument('isaac-root', default_value=os.path.join(os.getenv('HOME'), ISAAC_SIM_DEFAULT_INSTALL_PATH)),
+        DeclareLaunchArgument('xbox_ctrl', default_value='true'),
+        DeclareLaunchArgument('state_pub', default_value='true'),
         DeclareLaunchArgument('foxglove', default_value='true'),
         isaac_sim,
         launch_xbox_ctrl,

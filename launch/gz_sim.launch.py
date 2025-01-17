@@ -24,7 +24,7 @@ def generate_launch_description():
     worlds_dir = os.path.join( pkg_path, 'worlds' )
     artemis_arena_world = os.path.join( worlds_dir, 'artemis-arena.world' )
 
-
+# CORE
     # set env vars
     append_gz_env_vars = AppendEnvironmentVariable(
         'GZ_SIM_RESOURCE_PATH',
@@ -56,8 +56,8 @@ def generate_launch_description():
         arguments=[
             '-name', 'lance',
             '-file', lance_model_path,
-            '-x', "{num}".format(num = random.random() * 0.1 + 1.0),
-            '-y', "{num}".format(num = random.random() * 0.1 + 1.0),
+            '-x', "{num}".format(num = random.random() * 0.2 + 0.9),
+            '-y', "{num}".format(num = random.random() * 0.2 + 0.9),
             '-z', '0.0',
             '-Y', "{num}".format(num = random.random() * 6.2831815)
         ],
@@ -87,12 +87,43 @@ def generate_launch_description():
         output='screen'
     )
 
+# OPTIONAL
+    # launch xbox control
+    launch_xbox_ctrl = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_path, 'launch', 'xbox_ctrl.launch.py')
+        ),
+        condition = IfCondition(LaunchConfiguration('xbox_ctrl', default='true'))
+    )
+    # robot state publisher
+    state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_path, 'launch', 'robot_state_publisher.launch.py')
+        ),
+        launch_arguments = { 'use_sim_time' : 'true' }.items(),
+        condition = IfCondition(LaunchConfiguration('state_pub', default='true'))
+    )
+    # foxglove
+    foxglove_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_path, 'launch', 'foxglove.launch.py')
+        ),
+        launch_arguments = { 'use_sim_time' : 'true' }.items(),
+        condition = IfCondition(LaunchConfiguration('foxglove', default='true'))
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument('gz_gui', default_value='false'),
+        DeclareLaunchArgument('xbox_ctrl', default_value='true'),
+        DeclareLaunchArgument('state_pub', default_value='true'),
+        DeclareLaunchArgument('foxglove', default_value='true'),
         append_gz_env_vars,
         launch_gz_server,
         launch_gz_client,
         launch_robot_spawn,
         launch_ros_gz_topic_bridge,
-        launch_ros_gz_image_bridge
+        launch_ros_gz_image_bridge,
+        launch_xbox_ctrl,
+        state_publisher,
+        foxglove_node,
     ])
