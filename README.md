@@ -1,2 +1,2 @@
 # CSM Sim
-This repo contains simulation configurations for both Gazebo and Isaac Sim (see other branches), as well as robot descriptions. This is the base branch. Do not change it. It is meant for basing other versions of robot description off of!
+This repo contains simulation configurations for both Gazebo and Isaac Sim (see other branches), as well as robot descriptions. This branch contains config files used for the `robot_state_publisher` for **LANCE-1** (2024-2025). Check other branches to used the similation packages.
