@@ -1,21 +1,29 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-    <name>csm_gz_sim</name>
-    <version>1.0.0</version>
-    <description>CSM Robot Simulation</description>
-    <maintainer email="samrichter888@gmail.com">Sam Richter</maintainer>
-    <license>TODO: License declaration</license>
+  <name>csm_sim</name>
+  <version>1.0.0</version>
+  <description>CSM Robot Simulator</description>
+  <maintainer email="samrichter888@gmail.com">Sam Richter</maintainer>
+  <license>TODO: License declaration</license>
 
-    <depend>robot_state_publisher</depend>
-    <depend>xacro</depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <!-- <depend>ros_gz_bridge</depend>
+  <depend>ros_gz_image</depend>
+  <depend>ros_gz_sim</depend> -->
+  <depend>robot_state_publisher</depend>
+  <depend>joy</depend>
+  <depend>teleop_twist_joy</depend>
+  <depend>xacro</depend>
 
-    <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-    <test_depend>ament_lint_auto</test_depend>
-    <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
-    <export>
-        <build_type>ament_cmake</build_type>
-    </export>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
