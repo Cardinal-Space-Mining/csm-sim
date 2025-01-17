@@ -1,0 +1,2 @@
+# CSM Sim
+This repo contains simulation configurations for both Gazebo and Isaac Sim (see other branches), as well as robot descriptions. This is the base branch. Do not change it. It is meant for basing other versions of robot description off of!
