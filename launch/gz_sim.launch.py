@@ -21,7 +21,7 @@ def generate_launch_description():
     lance_model_path = os.path.join( pkg_path, 'description', 'lance', 'model.sdf' )
     bridge_params = os.path.join( pkg_path, 'config', 'ros_gz_bridge.yaml' )
 
-    worlds_dir = os.path.join( pkg_path, 'worlds' )
+    worlds_dir = os.path.join( pkg_path, 'gz-worlds' )
     artemis_arena_world = os.path.join( worlds_dir, 'artemis-arena.world' )
 
 # CORE
