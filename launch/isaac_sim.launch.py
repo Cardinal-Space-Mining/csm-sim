@@ -54,6 +54,8 @@ def generate_launch_description():
         condition = IfCondition(LaunchConfiguration('foxglove', default='true'))
     )
 
+    #ros2 run tf2_ros static_transform_publisher --x 0.2 --y 0.2 --z 0.43 --frame-id arena --child-frame-id map
+
     return LaunchDescription([
         DeclareLaunchArgument('isaac-root', default_value=os.path.join(os.getenv('HOME'), ISAAC_SIM_DEFAULT_INSTALL_PATH)),
         DeclareLaunchArgument('xbox_ctrl', default_value='true'),

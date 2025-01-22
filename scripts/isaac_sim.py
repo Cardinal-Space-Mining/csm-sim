@@ -252,7 +252,7 @@ try:
                 ("WorldTransform.inputs:prim",          "/lance/lance/base_link"),
                 ("WorldTransform.inputs:usePath",           False),
                 ("WorldTransformPub.inputs:childFrameId",   "sim_global_link"),
-                ("WorldTransformPub.inputs:parentFrameId",  "map"),
+                ("WorldTransformPub.inputs:parentFrameId",  "arena"),
                 ("WorldTransformPub.inputs:queueSize",      1),
                 ("WorldTransformPub.inputs:topicName",      "tf"),
 
